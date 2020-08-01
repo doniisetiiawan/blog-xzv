@@ -1,12 +1,12 @@
 import PropTypes from 'prop-types';
 import React from 'react';
 
-function Logout({ user, setUser }) {
+function Logout({ user, dispatch }) {
   return (
     <form
       onSubmit={(e) => {
         e.preventDefault();
-        setUser('');
+        dispatch({ type: 'LOGOUT' });
       }}
     >
       Logged in as: <b>{user}</b>
@@ -18,7 +18,7 @@ function Logout({ user, setUser }) {
 export default Logout;
 
 Logout.propTypes = {
-  setUser: PropTypes.func.isRequired,
+  dispatch: PropTypes.func.isRequired,
   user: PropTypes.string,
 };
 

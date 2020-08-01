@@ -4,14 +4,14 @@ import Logout from './logout';
 import Login from './login';
 import Register from './register';
 
-function UserBar({ user, setUser }) {
+function UserBar({ user, dispatch }) {
   if (user) {
-    return <Logout user={user} setUser={setUser} />;
+    return <Logout user={user} dispatch={dispatch} />;
   }
   return (
     <>
-      <Login setUser={setUser} />
-      <Register setUser={setUser} />
+      <Login dispatch={dispatch} />
+      <Register dispatch={dispatch} />
     </>
   );
 }
@@ -19,7 +19,7 @@ function UserBar({ user, setUser }) {
 export default UserBar;
 
 UserBar.propTypes = {
-  setUser: PropTypes.func.isRequired,
+  dispatch: PropTypes.func.isRequired,
   user: PropTypes.string,
 };
 

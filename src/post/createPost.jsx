@@ -2,7 +2,7 @@
 import PropTypes from 'prop-types';
 import React, { useState } from 'react';
 
-function CreatePost({ user, posts, setPosts }) {
+function CreatePost({ user, dispatch }) {
   const [title, setTitle] = useState('');
   const [content, setContent] = useState('');
 
@@ -15,8 +15,12 @@ function CreatePost({ user, posts, setPosts }) {
   }
 
   function handleCreate() {
-    const newPost = { title, content, author: user };
-    setPosts([newPost, ...posts]);
+    dispatch({
+      type: 'CREATE_POST',
+      title,
+      content,
+      author: user,
+    });
   }
 
   return (
@@ -48,12 +52,10 @@ function CreatePost({ user, posts, setPosts }) {
 export default CreatePost;
 
 CreatePost.propTypes = {
-  posts: PropTypes.arrayOf(PropTypes.any),
-  setPosts: PropTypes.func.isRequired,
+  dispatch: PropTypes.func.isRequired,
   user: PropTypes.string,
 };
 
 CreatePost.defaultProps = {
-  posts: [],
   user: '',
 };

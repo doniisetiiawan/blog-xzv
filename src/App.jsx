@@ -1,4 +1,5 @@
-import React, { useState } from 'react';
+/* eslint-disable no-case-declarations */
+import React, { useReducer } from 'react';
 import CreatePost from './post/createPost';
 import PostList from './postList';
 import UserBar from './user/userBar';
@@ -16,20 +17,48 @@ const defaultPosts = [
   },
 ];
 
+function userReducer(state, action) {
+  switch (action.type) {
+    case 'LOGIN':
+    case 'REGISTER':
+      return action.username;
+
+    case 'LOGOUT':
+      return '';
+
+    default:
+      throw new Error();
+  }
+}
+
+function postsReducer(state, action) {
+  switch (action.type) {
+    case 'CREATE_POST':
+      const newPost = {
+        title: action.title,
+        content: action.content,
+        author: action.author,
+      };
+      return [newPost, ...state];
+
+    default:
+      throw new Error();
+  }
+}
+
 function App() {
-  const [user, setUser] = useState('');
-  const [posts, setPosts] = useState(defaultPosts);
+  const [user, dispatchUser] = useReducer(userReducer, '');
+  const [posts, dispatchPosts] = useReducer(
+    postsReducer,
+    defaultPosts,
+  );
 
   return (
     <div style={{ padding: 8 }}>
-      <UserBar user={user} setUser={setUser} />
+      <UserBar user={user} dispatch={dispatchUser} />
       <br />
       {user && (
-        <CreatePost
-          user={user}
-          posts={posts}
-          setPosts={setPosts}
-        />
+        <CreatePost user={user} dispatch={dispatchPosts} />
       )}
       <br />
       <hr />
