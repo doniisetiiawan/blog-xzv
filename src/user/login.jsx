@@ -1,12 +1,26 @@
 /* eslint-disable jsx-a11y/label-has-associated-control */
-import React from 'react';
+import PropTypes from 'prop-types';
+import React, { useState } from 'react';
 
-function Login() {
+function Login({ setUser }) {
+  const [username, setUsername] = useState('');
+
+  function handleUsername(evt) {
+    setUsername(evt.target.value);
+  }
+
   return (
-    <form onSubmit={(e) => e.preventDefault()}>
+    <form
+      onSubmit={(e) => {
+        e.preventDefault();
+        setUser(username);
+      }}
+    >
       <label htmlFor="login-username">Username:</label>
       <input
         type="text"
+        value={username}
+        onChange={handleUsername}
         name="login-username"
         id="login-username"
       />
@@ -16,9 +30,17 @@ function Login() {
         name="login-password"
         id="login-password"
       />
-      <input type="submit" value="Login" />
+      <input
+        type="submit"
+        value="Login"
+        disabled={username.length === 0}
+      />
     </form>
   );
 }
 
 export default Login;
+
+Login.propTypes = {
+  setUser: PropTypes.func.isRequired,
+};
