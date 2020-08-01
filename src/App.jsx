@@ -1,44 +1,31 @@
-import React, { useState } from 'react';
+import React from 'react';
+import CreatePost from './post/createPost';
+import PostList from './postList';
+import UserBar from './user/userBar';
+
+const user = 'Daniel Bugl';
+const posts = [
+  {
+    title: 'React Hooks',
+    content: 'The greatest thing since sliced bread!',
+    author: 'Daniel Bugl',
+  },
+  {
+    title: 'Using React Fragments',
+    content: 'Keeping the DOM tree clean!',
+    author: 'Daniel Bugl',
+  },
+];
 
 function App() {
-  const [enableFirstName, setEnableFirstName] = useState(
-    false,
-  );
-  const [name, setName] = useState('');
-  const [lastName, setLastName] = useState('');
-
-  function handleChange(evt) {
-    setName(evt.target.value);
-  }
-
-  function handleLastNameChange(evt) {
-    setLastName(evt.target.value);
-  }
-
-  function handleEnableChange() {
-    setEnableFirstName(!enableFirstName);
-  }
-
   return (
-    <div>
-      <h1>
-        My name is: {enableFirstName ? name : ''} {lastName}
-      </h1>
-      <input
-        type="checkbox"
-        value={enableFirstName}
-        onChange={handleEnableChange}
-      />
-      <input
-        type="text"
-        value={name}
-        onChange={handleChange}
-      />
-      <input
-        type="text"
-        value={lastName}
-        onChange={handleLastNameChange}
-      />
+    <div style={{ padding: 8 }}>
+      <UserBar />
+      <br />
+      <CreatePost user={user} />
+      <br />
+      <hr />
+      <PostList posts={posts} />
     </div>
   );
 }
