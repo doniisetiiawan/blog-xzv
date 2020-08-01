@@ -3,6 +3,7 @@ import React, { useReducer } from 'react';
 import CreatePost from './post/createPost';
 import PostList from './postList';
 import UserBar from './user/userBar';
+import appReducer from './reducers';
 
 const defaultPosts = [
   {
@@ -17,48 +18,19 @@ const defaultPosts = [
   },
 ];
 
-function userReducer(state, action) {
-  switch (action.type) {
-    case 'LOGIN':
-    case 'REGISTER':
-      return action.username;
-
-    case 'LOGOUT':
-      return '';
-
-    default:
-      throw new Error();
-  }
-}
-
-function postsReducer(state, action) {
-  switch (action.type) {
-    case 'CREATE_POST':
-      const newPost = {
-        title: action.title,
-        content: action.content,
-        author: action.author,
-      };
-      return [newPost, ...state];
-
-    default:
-      throw new Error();
-  }
-}
-
 function App() {
-  const [user, dispatchUser] = useReducer(userReducer, '');
-  const [posts, dispatchPosts] = useReducer(
-    postsReducer,
-    defaultPosts,
-  );
+  const [state, dispatch] = useReducer(appReducer, {
+    user: '',
+    posts: defaultPosts,
+  });
+  const { user, posts } = state;
 
   return (
     <div style={{ padding: 8 }}>
-      <UserBar user={user} dispatch={dispatchUser} />
+      <UserBar user={user} dispatch={dispatch} />
       <br />
       {user && (
-        <CreatePost user={user} dispatch={dispatchPosts} />
+        <CreatePost user={user} dispatch={dispatch} />
       )}
       <br />
       <hr />
