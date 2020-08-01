@@ -1,5 +1,5 @@
 /* eslint-disable no-case-declarations */
-import React, { useReducer } from 'react';
+import React, { useEffect, useReducer } from 'react';
 import CreatePost from './post/createPost';
 import PostList from './postList';
 import UserBar from './user/userBar';
@@ -24,6 +24,14 @@ function App() {
     posts: defaultPosts,
   });
   const { user, posts } = state;
+
+  useEffect(() => {
+    if (user) {
+      document.title = `${user} - React Hooks Blog`;
+    } else {
+      document.title = 'React Hooks Blog';
+    }
+  }, [user]);
 
   return (
     <div style={{ padding: 8 }}>
