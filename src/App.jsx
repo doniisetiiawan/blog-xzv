@@ -4,6 +4,11 @@ import CreatePost from './post/createPost';
 import PostList from './postList';
 import UserBar from './user/userBar';
 import appReducer from './reducers';
+import Header from './header';
+
+export const ThemeContext = React.createContext({
+  primaryColor: 'coral',
+});
 
 const defaultPosts = [
   {
@@ -35,6 +40,7 @@ function App() {
 
   return (
     <div style={{ padding: 8 }}>
+      <Header />
       <UserBar user={user} dispatch={dispatch} />
       <br />
       {user && (
