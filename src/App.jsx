@@ -1,14 +1,16 @@
 /* eslint-disable no-case-declarations */
-import React, { useEffect, useReducer } from 'react';
+import React, {
+  useEffect,
+  useReducer,
+  useState,
+} from 'react';
 import CreatePost from './post/createPost';
 import PostList from './postList';
 import UserBar from './user/userBar';
 import appReducer from './reducers';
 import Header from './header';
-
-export const ThemeContext = React.createContext({
-  primaryColor: 'coral',
-});
+import { ThemeContext } from './themeContext';
+import ChangeTheme from './changeTheme';
 
 const defaultPosts = [
   {
@@ -24,6 +26,11 @@ const defaultPosts = [
 ];
 
 function App() {
+  const [theme, setTheme] = useState({
+    primaryColor: 'deepskyblue',
+    secondaryColor: 'coral',
+  });
+
   const [state, dispatch] = useReducer(appReducer, {
     user: '',
     posts: defaultPosts,
@@ -39,17 +46,21 @@ function App() {
   }, [user]);
 
   return (
-    <div style={{ padding: 8 }}>
-      <Header />
-      <UserBar user={user} dispatch={dispatch} />
-      <br />
-      {user && (
-        <CreatePost user={user} dispatch={dispatch} />
-      )}
-      <br />
-      <hr />
-      <PostList posts={posts} />
-    </div>
+    <ThemeContext.Provider value={theme}>
+      <div style={{ padding: 8 }}>
+        <Header text="React Hooks Blog" />
+        <ChangeTheme theme={theme} setTheme={setTheme} />
+        <br />
+        <UserBar user={user} dispatch={dispatch} />
+        <br />
+        {user && (
+          <CreatePost user={user} dispatch={dispatch} />
+        )}
+        <br />
+        <hr />
+        <PostList posts={posts} />
+      </div>
+    </ThemeContext.Provider>
   );
 }
 
