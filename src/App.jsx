@@ -13,19 +13,6 @@ import { ThemeContext } from './themeContext';
 import { StateContext } from './stateContext';
 import ChangeTheme from './changeTheme';
 
-const defaultPosts = [
-  {
-    title: 'React Hooks',
-    content: 'The greatest thing since sliced bread!',
-    author: 'Daniel Bugl',
-  },
-  {
-    title: 'Using React Fragments',
-    content: 'Keeping the DOM tree clean!',
-    author: 'Daniel Bugl',
-  },
-];
-
 function App() {
   const [theme, setTheme] = useState({
     primaryColor: 'deepskyblue',
@@ -34,9 +21,15 @@ function App() {
 
   const [state, dispatch] = useReducer(appReducer, {
     user: '',
-    posts: defaultPosts,
+    posts: [],
   });
-  const { user, posts } = state;
+  const { user } = state;
+
+  useEffect(() => {
+    fetch('/api/posts')
+      .then((result) => result.json())
+      .then((posts) => dispatch({ type: 'FETCH_POSTS', posts }));
+  }, []);
 
   useEffect(() => {
     if (user) {
@@ -55,12 +48,10 @@ function App() {
           <br />
           <UserBar />
           <br />
-          {user && (
-            <CreatePost />
-          )}
+          {user && <CreatePost />}
           <br />
           <hr />
-          <PostList posts={posts} />
+          <PostList />
         </div>
       </ThemeContext.Provider>
     </StateContext.Provider>

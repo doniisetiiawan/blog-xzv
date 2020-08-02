@@ -1,16 +1,16 @@
 /* eslint-disable react/prop-types,react/no-array-index-key */
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import ThemeItem from './themeItem';
 
-const THEMES = [
-  { primaryColor: 'deepskyblue', secondaryColor: 'coral' },
-  {
-    primaryColor: 'orchid',
-    secondaryColor: 'mediumseagreen',
-  },
-];
-
 function ChangeTheme({ theme, setTheme }) {
+  const [themes, setThemes] = useState([]);
+
+  useEffect(() => {
+    fetch('/api/themes')
+      .then((result) => result.json())
+      .then((posts) => setThemes(posts));
+  }, []);
+
   function isActive(t) {
     return (
       t.primaryColor === theme.primaryColor
@@ -21,7 +21,7 @@ function ChangeTheme({ theme, setTheme }) {
   return (
     <div>
       Change theme:
-      {THEMES.map((t, i) => (
+      {themes.map((t, i) => (
         <ThemeItem
           key={`theme-${i}`}
           theme={t}
