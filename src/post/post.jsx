@@ -3,6 +3,8 @@ import React, { useContext } from 'react';
 import { ThemeContext } from '../themeContext';
 
 function Post({ title, content, author }) {
+  console.log('rendering Post');
+
   const { secondaryColor } = useContext(ThemeContext);
 
   return (
@@ -17,7 +19,12 @@ function Post({ title, content, author }) {
   );
 }
 
-export default Post;
+export default React.memo(
+  Post,
+  (prev, next) => prev.title === next.title
+    && prev.content === next.content
+    && prev.author === next.author,
+);
 
 Post.propTypes = {
   author: PropTypes.string,

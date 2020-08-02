@@ -1,7 +1,7 @@
 /* eslint-disable react/no-array-index-key */
 import React, { useContext } from 'react';
-import Post from './post/post';
-import { StateContext } from './stateContext';
+import Post from './post';
+import { StateContext } from '../stateContext';
 
 function PostList() {
   const { state } = useContext(StateContext);

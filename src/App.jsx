@@ -6,7 +6,7 @@ import React, {
 } from 'react';
 import { useResource } from 'react-request-hook';
 import CreatePost from './post/createPost';
-import PostList from './postList';
+import PostList from './post/postList';
 import UserBar from './user/userBar';
 import appReducer from './reducers';
 import Header from './header';
