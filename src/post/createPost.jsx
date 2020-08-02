@@ -1,15 +1,21 @@
 /* eslint-disable jsx-a11y/label-has-associated-control */
-import React, { useContext, useEffect, useState } from 'react';
+import React, { useContext, useEffect } from 'react';
 import { useResource } from 'react-request-hook';
 import { useNavigation } from 'react-navi';
+import { useInput } from 'react-hookedup';
 import { StateContext } from '../stateContext';
 
 function CreatePost() {
   const { state, dispatch } = useContext(StateContext);
   const { user } = state;
 
-  const [title, setTitle] = useState('');
-  const [content, setContent] = useState('');
+  const { value: title, bindToInput: bindTitle } = useInput(
+    '',
+  );
+  const {
+    value: content,
+    bindToInput: bindContent,
+  } = useInput('');
 
   const [post, createPost] = useResource(
     ({ title, content, author }) => ({
@@ -27,14 +33,6 @@ function CreatePost() {
       navigation.navigate(`/view/${post.data.id}`);
     }
   }, [post]);
-
-  function handleTitle(evt) {
-    setTitle(evt.target.value);
-  }
-
-  function handleContent(evt) {
-    setContent(evt.target.value);
-  }
 
   function handleCreate() {
     createPost({ title, content, author: user });
@@ -55,12 +53,12 @@ function CreatePost() {
         <input
           type="text"
           value={title}
-          onChange={handleTitle}
+          {...bindTitle}
           name="create-title"
           id="create-title"
         />
       </div>
-      <textarea value={content} onChange={handleContent} />
+      <textarea value={content} {...bindContent} />
       <input type="submit" value="Create" />
     </form>
   );

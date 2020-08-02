@@ -5,14 +5,21 @@ import React, {
   useState,
 } from 'react';
 import { useResource } from 'react-request-hook';
+import { useInput } from 'react-hookedup';
 import { StateContext } from '../stateContext';
 
 function Login() {
   const { dispatch } = useContext(StateContext);
 
-  const [username, setUsername] = useState('');
+  const {
+    value: username,
+    bindToInput: bindUsername,
+  } = useInput('');
   const [loginFailed, setLoginFailed] = useState(false);
-  const [password, setPassword] = useState('');
+  const {
+    value: password,
+    bindToInput: bindPassword,
+  } = useInput('');
 
   const [user, login] = useResource(
     (username, password) => ({
@@ -40,14 +47,6 @@ function Login() {
     }
   }, [user]);
 
-  function handleUsername(evt) {
-    setUsername(evt.target.value);
-  }
-
-  function handlePassword(evt) {
-    setPassword(evt.target.value);
-  }
-
   return (
     <form
       onSubmit={(e) => {
@@ -59,7 +58,7 @@ function Login() {
       <input
         type="text"
         value={username}
-        onChange={handleUsername}
+        {...bindUsername}
         name="login-username"
         id="login-username"
       />
@@ -67,7 +66,7 @@ function Login() {
       <input
         type="password"
         value={password}
-        onChange={handlePassword}
+        {...bindPassword}
         name="login-password"
         id="login-password"
       />

@@ -1,18 +1,24 @@
 /* eslint-disable jsx-a11y/label-has-associated-control */
-import React, {
-  useContext,
-  useEffect,
-  useState,
-} from 'react';
+import React, { useContext, useEffect } from 'react';
 import { useResource } from 'react-request-hook';
+import { useInput } from 'react-hookedup';
 import { StateContext } from '../stateContext';
 
 function Register() {
   const { dispatch } = useContext(StateContext);
 
-  const [username, setUsername] = useState('');
-  const [password, setPassword] = useState('');
-  const [passwordRepeat, setPasswordRepeat] = useState('');
+  const {
+    value: username,
+    bindToInput: bindUsername,
+  } = useInput('');
+  const {
+    value: password,
+    bindToInput: bindPassword,
+  } = useInput('');
+  const {
+    value: passwordRepeat,
+    bindToInput: bindPasswordRepeat,
+  } = useInput('');
 
   const [user, register] = useResource(
     (username, password) => ({
@@ -31,18 +37,6 @@ function Register() {
     }
   }, [user]);
 
-  function handleUsername(evt) {
-    setUsername(evt.target.value);
-  }
-
-  function handlePassword(evt) {
-    setPassword(evt.target.value);
-  }
-
-  function handlePasswordRepeat(evt) {
-    setPasswordRepeat(evt.target.value);
-  }
-
   return (
     <form
       onSubmit={(e) => {
@@ -54,7 +48,7 @@ function Register() {
       <input
         type="text"
         value={username}
-        onChange={handleUsername}
+        {...bindUsername}
         name="register-username"
         id="register-username"
       />
@@ -62,7 +56,7 @@ function Register() {
       <input
         type="password"
         value={password}
-        onChange={handlePassword}
+        {...bindPassword}
         name="register-password"
         id="register-password"
       />
@@ -72,7 +66,7 @@ function Register() {
       <input
         type="password"
         value={passwordRepeat}
-        onChange={handlePasswordRepeat}
+        {...bindPasswordRepeat}
         name="register-password-repeat"
         id="register-password-repeat"
       />
