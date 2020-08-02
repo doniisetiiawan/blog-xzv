@@ -1,8 +1,9 @@
 import React, { useContext } from 'react';
-import Logout from './logout';
 import Login from './login';
 import Register from './register';
 import { StateContext } from '../stateContext';
+
+const Logout = React.lazy(() => import('./logout'));
 
 function UserBar() {
   const { state } = useContext(StateContext);
