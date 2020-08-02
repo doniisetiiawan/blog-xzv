@@ -1,5 +1,6 @@
 import PropTypes from 'prop-types';
 import React, { useContext } from 'react';
+import useWindowSize from '@rehooks/window-size';
 import { ThemeContext } from '../themeContext';
 import { StateContext } from '../stateContext';
 import Header from '../header';
@@ -13,15 +14,22 @@ function HeaderBar({ setTheme }) {
   const { state } = useContext(StateContext);
   const { user } = state;
 
+  const { innerWidth } = useWindowSize();
+  const mobilePhone = innerWidth < 640;
+
   return (
     <div>
       <Header text="React Hooks Blog" />
-      <ChangeTheme theme={theme} setTheme={setTheme} />
-      <br />
-      <React.Suspense fallback="Loading...">
-        <UserBar />
-      </React.Suspense>
-      <br />
+      {!mobilePhone && (
+        <ChangeTheme theme={theme} setTheme={setTheme} />
+      )}
+      {!mobilePhone && <br />}
+      {!mobilePhone && (
+        <React.Suspense fallback="Loading...">
+          <UserBar />
+        </React.Suspense>
+      )}
+      {!mobilePhone && <br />}
       {user && <CreatePost />}
     </div>
   );
