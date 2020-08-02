@@ -1,13 +1,10 @@
 /* eslint-disable react/prop-types,react/no-array-index-key */
 import React, { useEffect } from 'react';
-import { useResource } from 'react-request-hook';
 import ThemeItem from './themeItem';
+import { useAPIThemes } from './hooks';
 
 function ChangeTheme({ theme, setTheme }) {
-  const [themes, getThemes] = useResource(() => ({
-    url: '/themes',
-    method: 'get',
-  }));
+  const [themes, getThemes] = useAPIThemes();
   const { data, isLoading } = themes;
 
   useEffect(getThemes, []);

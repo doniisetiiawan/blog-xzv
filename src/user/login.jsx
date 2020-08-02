@@ -1,15 +1,10 @@
 /* eslint-disable jsx-a11y/label-has-associated-control */
-import React, {
-  useContext,
-  useEffect,
-  useState,
-} from 'react';
-import { useResource } from 'react-request-hook';
+import React, { useEffect, useState } from 'react';
 import { useInput } from 'react-hookedup';
-import { StateContext } from '../stateContext';
+import { useAPILogin, useDispatch } from '../hooks';
 
 function Login() {
-  const { dispatch } = useContext(StateContext);
+  const dispatch = useDispatch();
 
   const {
     value: username,
@@ -21,14 +16,7 @@ function Login() {
     bindToInput: bindPassword,
   } = useInput('');
 
-  const [user, login] = useResource(
-    (username, password) => ({
-      url: `/login/${encodeURI(username)}/${encodeURI(
-        password,
-      )}`,
-      method: 'get',
-    }),
-  );
+  const [user, login] = useAPILogin();
 
   useEffect(() => {
     if (user && user.data) {

@@ -1,11 +1,10 @@
 /* eslint-disable react/no-array-index-key */
-import React, { useContext } from 'react';
+import React from 'react';
 import Post from './post';
-import { StateContext } from '../stateContext';
+import { usePostsState } from '../hooks';
 
 function PostList() {
-  const { state } = useContext(StateContext);
-  const { posts } = state;
+  const posts = usePostsState();
 
   return (
     <div>

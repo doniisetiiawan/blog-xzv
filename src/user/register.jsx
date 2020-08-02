@@ -1,11 +1,10 @@
 /* eslint-disable jsx-a11y/label-has-associated-control */
-import React, { useContext, useEffect } from 'react';
-import { useResource } from 'react-request-hook';
+import React, { useEffect } from 'react';
 import { useInput } from 'react-hookedup';
-import { StateContext } from '../stateContext';
+import { useAPIRegister, useDispatch } from '../hooks';
 
 function Register() {
-  const { dispatch } = useContext(StateContext);
+  const dispatch = useDispatch();
 
   const {
     value: username,
@@ -20,13 +19,7 @@ function Register() {
     bindToInput: bindPasswordRepeat,
   } = useInput('');
 
-  const [user, register] = useResource(
-    (username, password) => ({
-      url: '/users',
-      method: 'post',
-      data: { username, password },
-    }),
-  );
+  const [user, register] = useAPIRegister();
 
   useEffect(() => {
     if (user && user.data) {
@@ -35,7 +28,7 @@ function Register() {
         username: user.data.username,
       });
     }
-  }, [user]);
+  }, [dispatch, user]);
 
   return (
     <form

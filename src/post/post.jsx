@@ -1,7 +1,7 @@
 import PropTypes from 'prop-types';
-import React, { useContext } from 'react';
+import React from 'react';
 import { Link } from 'react-navi';
-import { ThemeContext } from '../themeContext';
+import { useTheme } from '../hooks';
 
 function Post({
   id,
@@ -11,7 +11,7 @@ function Post({
   short = false,
 }) {
   console.log('rendering Post');
-  const { secondaryColor } = useContext(ThemeContext);
+  const { secondaryColor } = useTheme();
 
   let processedContent = content;
   if (short) {

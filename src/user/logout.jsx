@@ -1,9 +1,9 @@
-import React, { useContext } from 'react';
-import { StateContext } from '../stateContext';
+import React from 'react';
+import { useDispatch, useUserState } from '../hooks';
 
 function Logout() {
-  const { state, dispatch } = useContext(StateContext);
-  const { user } = state;
+  const dispatch = useDispatch();
+  const user = useUserState();
 
   return (
     <form

@@ -1,49 +1,27 @@
 /* eslint-disable jsx-a11y/label-has-associated-control */
-import React, {
-  useContext,
-  useEffect,
-  useState,
-} from 'react';
-import { useResource } from 'react-request-hook';
+import React, { useEffect } from 'react';
 import { useNavigation } from 'react-navi';
 import { useInput } from 'react-hookedup';
-import useUndo from 'use-undo';
-import { useDebouncedCallback } from 'use-debounce';
-import { StateContext } from '../stateContext';
+import {
+  useAPICreatePost, useDebouncedUndo, useDispatch, useUserState,
+} from '../hooks';
 
 function CreatePost() {
-  const { state, dispatch } = useContext(StateContext);
-  const { user } = state;
+  const user = useUserState();
+  const dispatch = useDispatch();
 
   const { value: title, bindToInput: bindTitle } = useInput(
     '',
   );
-  const [content, setInput] = useState('');
   const [
-    undoContent,
+    content,
+    setContent,
     {
-      set: setContent, undo, redo, canUndo, canRedo,
+      undo, redo, canUndo, canRedo,
     },
-  ] = useUndo('');
+  ] = useDebouncedUndo();
 
-  const [
-    setDebounce,
-    cancelDebounce,
-  ] = useDebouncedCallback((value) => {
-    setContent(value);
-  }, 200);
-  useEffect(() => {
-    cancelDebounce();
-    setInput(undoContent.present);
-  }, [undoContent]);
-
-  const [post, createPost] = useResource(
-    ({ title, content, author }) => ({
-      url: '/posts',
-      method: 'post',
-      data: { title, content, author },
-    }),
-  );
+  const [post, createPost] = useAPICreatePost();
 
   const navigation = useNavigation();
 
@@ -52,12 +30,11 @@ function CreatePost() {
       dispatch({ type: 'CREATE_POST', ...post.data });
       navigation.navigate(`/view/${post.data.id}`);
     }
-  }, [post]);
+  }, [dispatch, navigation, post]);
 
   function handleContent(e) {
     const { value } = e.target;
-    setInput(value);
-    setDebounce(value);
+    setContent(value);
   }
 
   function handleCreate() {
