@@ -1,28 +1,22 @@
-import PropTypes from 'prop-types';
-import React from 'react';
+import React, { useContext } from 'react';
 import Logout from './logout';
 import Login from './login';
 import Register from './register';
+import { StateContext } from '../stateContext';
 
-function UserBar({ user, dispatch }) {
+function UserBar() {
+  const { state } = useContext(StateContext);
+  const { user } = state;
+
   if (user) {
-    return <Logout user={user} dispatch={dispatch} />;
+    return <Logout />;
   }
   return (
     <>
-      <Login dispatch={dispatch} />
-      <Register dispatch={dispatch} />
+      <Login />
+      <Register />
     </>
   );
 }
 
 export default UserBar;
-
-UserBar.propTypes = {
-  dispatch: PropTypes.func.isRequired,
-  user: PropTypes.string,
-};
-
-UserBar.defaultProps = {
-  user: '',
-};

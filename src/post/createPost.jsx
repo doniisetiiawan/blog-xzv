@@ -1,8 +1,11 @@
 /* eslint-disable jsx-a11y/label-has-associated-control */
-import PropTypes from 'prop-types';
-import React, { useState } from 'react';
+import React, { useContext, useState } from 'react';
+import { StateContext } from '../stateContext';
 
-function CreatePost({ user, dispatch }) {
+function CreatePost() {
+  const { state, dispatch } = useContext(StateContext);
+  const { user } = state;
+
   const [title, setTitle] = useState('');
   const [content, setContent] = useState('');
 
@@ -50,12 +53,3 @@ function CreatePost({ user, dispatch }) {
 }
 
 export default CreatePost;
-
-CreatePost.propTypes = {
-  dispatch: PropTypes.func.isRequired,
-  user: PropTypes.string,
-};
-
-CreatePost.defaultProps = {
-  user: '',
-};

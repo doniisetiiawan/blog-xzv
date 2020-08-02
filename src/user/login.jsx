@@ -1,8 +1,10 @@
 /* eslint-disable jsx-a11y/label-has-associated-control */
-import PropTypes from 'prop-types';
-import React, { useState } from 'react';
+import React, { useContext, useState } from 'react';
+import { StateContext } from '../stateContext';
 
-function Login({ dispatch }) {
+function Login() {
+  const { dispatch } = useContext(StateContext);
+
   const [username, setUsername] = useState('');
 
   function handleUsername(evt) {
@@ -40,7 +42,3 @@ function Login({ dispatch }) {
 }
 
 export default Login;
-
-Login.propTypes = {
-  dispatch: PropTypes.func.isRequired,
-};

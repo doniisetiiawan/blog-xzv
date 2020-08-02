@@ -1,9 +1,12 @@
 /* eslint-disable react/no-array-index-key */
-import PropTypes from 'prop-types';
-import React from 'react';
+import React, { useContext } from 'react';
 import Post from './post/post';
+import { StateContext } from './stateContext';
 
-function PostList({ posts = [] }) {
+function PostList() {
+  const { state } = useContext(StateContext);
+  const { posts } = state;
+
   return (
     <div>
       {posts.map((p, i) => (
@@ -17,11 +20,3 @@ function PostList({ posts = [] }) {
 }
 
 export default PostList;
-
-PostList.propTypes = {
-  posts: PropTypes.arrayOf(PropTypes.any),
-};
-
-PostList.defaultProps = {
-  posts: [],
-};

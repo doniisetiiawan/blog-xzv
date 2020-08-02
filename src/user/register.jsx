@@ -1,8 +1,10 @@
 /* eslint-disable jsx-a11y/label-has-associated-control */
-import PropTypes from 'prop-types';
-import React, { useState } from 'react';
+import React, { useContext, useState } from 'react';
+import { StateContext } from '../stateContext';
 
-function Register({ dispatch }) {
+function Register() {
+  const { dispatch } = useContext(StateContext);
+
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [passwordRepeat, setPasswordRepeat] = useState('');
@@ -66,7 +68,3 @@ function Register({ dispatch }) {
 }
 
 export default Register;
-
-Register.propTypes = {
-  dispatch: PropTypes.func.isRequired,
-};

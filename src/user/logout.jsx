@@ -1,7 +1,10 @@
-import PropTypes from 'prop-types';
-import React from 'react';
+import React, { useContext } from 'react';
+import { StateContext } from '../stateContext';
 
-function Logout({ user, dispatch }) {
+function Logout() {
+  const { state, dispatch } = useContext(StateContext);
+  const { user } = state;
+
   return (
     <form
       onSubmit={(e) => {
@@ -16,12 +19,3 @@ function Logout({ user, dispatch }) {
 }
 
 export default Logout;
-
-Logout.propTypes = {
-  dispatch: PropTypes.func.isRequired,
-  user: PropTypes.string,
-};
-
-Logout.defaultProps = {
-  user: 'Daniel Bugl',
-};

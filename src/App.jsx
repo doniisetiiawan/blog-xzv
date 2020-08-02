@@ -10,6 +10,7 @@ import UserBar from './user/userBar';
 import appReducer from './reducers';
 import Header from './header';
 import { ThemeContext } from './themeContext';
+import { StateContext } from './stateContext';
 import ChangeTheme from './changeTheme';
 
 const defaultPosts = [
@@ -46,21 +47,23 @@ function App() {
   }, [user]);
 
   return (
-    <ThemeContext.Provider value={theme}>
-      <div style={{ padding: 8 }}>
-        <Header text="React Hooks Blog" />
-        <ChangeTheme theme={theme} setTheme={setTheme} />
-        <br />
-        <UserBar user={user} dispatch={dispatch} />
-        <br />
-        {user && (
-          <CreatePost user={user} dispatch={dispatch} />
-        )}
-        <br />
-        <hr />
-        <PostList posts={posts} />
-      </div>
-    </ThemeContext.Provider>
+    <StateContext.Provider value={{ state, dispatch }}>
+      <ThemeContext.Provider value={theme}>
+        <div style={{ padding: 8 }}>
+          <Header text="React Hooks Blog" />
+          <ChangeTheme theme={theme} setTheme={setTheme} />
+          <br />
+          <UserBar />
+          <br />
+          {user && (
+            <CreatePost />
+          )}
+          <br />
+          <hr />
+          <PostList posts={posts} />
+        </div>
+      </ThemeContext.Provider>
+    </StateContext.Provider>
   );
 }
 
