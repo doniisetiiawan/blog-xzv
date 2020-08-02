@@ -1,18 +1,10 @@
 /* eslint-disable no-case-declarations */
-import React, {
-  useEffect,
-  useReducer,
-  useState,
-} from 'react';
-import { useResource } from 'react-request-hook';
-import CreatePost from './post/createPost';
-import PostList from './post/postList';
-import UserBar from './user/userBar';
+import React, { useEffect, useReducer, useState } from 'react';
 import appReducer from './reducers';
-import Header from './header';
 import { ThemeContext } from './themeContext';
 import { StateContext } from './stateContext';
-import ChangeTheme from './changeTheme';
+import HeaderBar from './pages/headerBar';
+import PostPage from './pages/postPage';
 
 function App() {
   const [theme, setTheme] = useState({
@@ -25,24 +17,8 @@ function App() {
     posts: [],
     error: '',
   });
-  const { user, error } = state;
+  const { user } = state;
 
-  const [posts, getPosts] = useResource(() => ({
-    url: '/posts',
-    method: 'get',
-  }));
-  useEffect(getPosts, []);
-  useEffect(() => {
-    if (posts && posts.error) {
-      dispatch({ type: 'POSTS_ERROR' });
-    }
-    if (posts && posts.data) {
-      dispatch({
-        type: 'FETCH_POSTS',
-        posts: posts.data.reverse(),
-      });
-    }
-  }, [posts]);
   useEffect(() => {
     if (user) {
       document.title = `${user} - React Hooks Blog`;
@@ -55,18 +31,11 @@ function App() {
     <StateContext.Provider value={{ state, dispatch }}>
       <ThemeContext.Provider value={theme}>
         <div style={{ padding: 8 }}>
-          <Header text="React Hooks Blog" />
-          <ChangeTheme theme={theme} setTheme={setTheme} />
-          <br />
-          <React.Suspense fallback="Loading...">
-            <UserBar />
-          </React.Suspense>
-          <br />
-          {user && <CreatePost />}
-          <br />
+          <HeaderBar setTheme={setTheme} />
           <hr />
-          {error && <b>{error}</b>}
-          <PostList />
+          {/* <HomePage /> */}
+
+          <PostPage id="react-hooks" />
         </div>
       </ThemeContext.Provider>
     </StateContext.Provider>
