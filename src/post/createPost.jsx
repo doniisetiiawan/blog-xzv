@@ -1,9 +1,14 @@
 /* eslint-disable jsx-a11y/label-has-associated-control */
-import React, { useContext, useEffect } from 'react';
+import React, {
+  useContext,
+  useEffect,
+  useState,
+} from 'react';
 import { useResource } from 'react-request-hook';
 import { useNavigation } from 'react-navi';
 import { useInput } from 'react-hookedup';
 import useUndo from 'use-undo';
+import { useDebouncedCallback } from 'use-debounce';
 import { StateContext } from '../stateContext';
 
 function CreatePost() {
@@ -13,6 +18,7 @@ function CreatePost() {
   const { value: title, bindToInput: bindTitle } = useInput(
     '',
   );
+  const [content, setInput] = useState('');
   const [
     undoContent,
     {
@@ -20,11 +26,16 @@ function CreatePost() {
     },
   ] = useUndo('');
 
-  const content = undoContent.present;
-
-  function handleContent(e) {
-    setContent(e.target.value);
-  }
+  const [
+    setDebounce,
+    cancelDebounce,
+  ] = useDebouncedCallback((value) => {
+    setContent(value);
+  }, 200);
+  useEffect(() => {
+    cancelDebounce();
+    setInput(undoContent.present);
+  }, [undoContent]);
 
   const [post, createPost] = useResource(
     ({ title, content, author }) => ({
@@ -42,6 +53,12 @@ function CreatePost() {
       navigation.navigate(`/view/${post.data.id}`);
     }
   }, [post]);
+
+  function handleContent(e) {
+    const { value } = e.target;
+    setInput(value);
+    setDebounce(value);
+  }
 
   function handleCreate() {
     createPost({ title, content, author: user });
@@ -68,9 +85,21 @@ function CreatePost() {
         />
       </div>
       <textarea value={content} onChange={handleContent} />
+      <button
+        type="button"
+        onClick={undo}
+        disabled={!canUndo}
+      >
+        Undo
+      </button>
+      <button
+        type="button"
+        onClick={redo}
+        disabled={!canRedo}
+      >
+        Redo
+      </button>
       <input type="submit" value="Create" />
-      <button type="button" onClick={undo} disabled={!canUndo}>Undo</button>
-      <button type="button" onClick={redo} disabled={!canRedo}>Redo</button>
     </form>
   );
 }
