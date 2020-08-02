@@ -12,6 +12,7 @@ import { StateContext } from './stateContext';
 import HeaderBar from './pages/headerBar';
 import PostPage from './pages/postPage';
 import HomePage from './pages/homePage';
+import FooterBar from './pages/footerBar';
 
 const routes = mount({
   '/': route({ view: <HomePage /> }),
@@ -49,6 +50,7 @@ function App() {
             <HeaderBar setTheme={setTheme} />
             <hr />
             <View />
+            <FooterBar />
           </div>
         </Router>
       </ThemeContext.Provider>

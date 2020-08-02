@@ -1,6 +1,7 @@
 /* eslint-disable jsx-a11y/label-has-associated-control */
 import React, { useContext, useEffect, useState } from 'react';
 import { useResource } from 'react-request-hook';
+import { useNavigation } from 'react-navi';
 import { StateContext } from '../stateContext';
 
 function CreatePost() {
@@ -18,9 +19,12 @@ function CreatePost() {
     }),
   );
 
+  const navigation = useNavigation();
+
   useEffect(() => {
     if (post && post.data) {
       dispatch({ type: 'CREATE_POST', ...post.data });
+      navigation.navigate(`/view/${post.data.id}`);
     }
   }, [post]);
 
