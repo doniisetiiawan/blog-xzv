@@ -1,5 +1,5 @@
 /* eslint-disable jsx-a11y/label-has-associated-control */
-import React, { useContext, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import { useResource } from 'react-request-hook';
 import { StateContext } from '../stateContext';
 
@@ -10,13 +10,19 @@ function CreatePost() {
   const [title, setTitle] = useState('');
   const [content, setContent] = useState('');
 
-  const [, createPost] = useResource(
+  const [post, createPost] = useResource(
     ({ title, content, author }) => ({
       url: '/posts',
       method: 'post',
       data: { title, content, author },
     }),
   );
+
+  useEffect(() => {
+    if (post && post.data) {
+      dispatch({ type: 'CREATE_POST', ...post.data });
+    }
+  }, [post]);
 
   function handleTitle(evt) {
     setTitle(evt.target.value);
@@ -28,13 +34,8 @@ function CreatePost() {
 
   function handleCreate() {
     createPost({ title, content, author: user });
-    dispatch({
-      type: 'CREATE_POST',
-      title,
-      content,
-      author: user,
-    });
   }
+
   return (
     <form
       onSubmit={(e) => {

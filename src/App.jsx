@@ -1,10 +1,24 @@
 /* eslint-disable no-case-declarations */
-import React, { useEffect, useReducer, useState } from 'react';
+import React, {
+  useEffect,
+  useReducer,
+  useState,
+} from 'react';
+import { mount, route } from 'navi';
+import { Router, View } from 'react-navi';
 import appReducer from './reducers';
 import { ThemeContext } from './themeContext';
 import { StateContext } from './stateContext';
 import HeaderBar from './pages/headerBar';
 import PostPage from './pages/postPage';
+import HomePage from './pages/homePage';
+
+const routes = mount({
+  '/': route({ view: <HomePage /> }),
+  '/view/:id': route((req) => ({
+    view: <PostPage id={req.params.id} />,
+  })),
+});
 
 function App() {
   const [theme, setTheme] = useState({
@@ -30,13 +44,13 @@ function App() {
   return (
     <StateContext.Provider value={{ state, dispatch }}>
       <ThemeContext.Provider value={theme}>
-        <div style={{ padding: 8 }}>
-          <HeaderBar setTheme={setTheme} />
-          <hr />
-          {/* <HomePage /> */}
-
-          <PostPage id="react-hooks" />
-        </div>
+        <Router routes={routes}>
+          <div style={{ padding: 8 }}>
+            <HeaderBar setTheme={setTheme} />
+            <hr />
+            <View />
+          </div>
+        </Router>
       </ThemeContext.Provider>
     </StateContext.Provider>
   );

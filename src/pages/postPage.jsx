@@ -1,6 +1,7 @@
 import PropTypes from 'prop-types';
 import React, { useEffect } from 'react';
 import { useResource } from 'react-request-hook';
+import { Link } from 'react-navi';
 import Post from '../post/post';
 
 function PostPage({ id }) {
@@ -12,9 +13,14 @@ function PostPage({ id }) {
 
   return (
     <div>
-      {(post && post.data)
-        ? <Post {...post.data} />
-        : 'Loading...'}
+      <div>
+        <Link href="/">Go back</Link>
+      </div>
+      {post && post.data ? (
+        <Post {...post.data} />
+      ) : (
+        'Loading...'
+      )}
       <hr />
     </div>
   );
