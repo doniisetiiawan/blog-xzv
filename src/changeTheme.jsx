@@ -1,15 +1,16 @@
 /* eslint-disable react/prop-types,react/no-array-index-key */
-import React, { useEffect, useState } from 'react';
+import React, { useEffect } from 'react';
+import { useResource } from 'react-request-hook';
 import ThemeItem from './themeItem';
 
 function ChangeTheme({ theme, setTheme }) {
-  const [themes, setThemes] = useState([]);
+  const [themes, getThemes] = useResource(() => ({
+    url: '/themes',
+    method: 'get',
+  }));
+  const { data, isLoading } = themes;
 
-  useEffect(() => {
-    fetch('/api/themes')
-      .then((result) => result.json())
-      .then((posts) => setThemes(posts));
-  }, []);
+  useEffect(getThemes, []);
 
   function isActive(t) {
     return (
@@ -21,14 +22,16 @@ function ChangeTheme({ theme, setTheme }) {
   return (
     <div>
       Change theme:
-      {themes.map((t, i) => (
-        <ThemeItem
-          key={`theme-${i}`}
-          theme={t}
-          active={isActive(t)}
-          onClick={() => setTheme(t)}
-        />
-      ))}
+      {isLoading && ' Loading themes...'}
+      {data
+        && data.map((t, i) => (
+          <ThemeItem
+            key={`theme-${i}`}
+            theme={t}
+            active={isActive(t)}
+            onClick={() => setTheme(t)}
+          />
+        ))}
     </div>
   );
 }

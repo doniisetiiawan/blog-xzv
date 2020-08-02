@@ -4,6 +4,7 @@ import React, {
   useReducer,
   useState,
 } from 'react';
+import { useResource } from 'react-request-hook';
 import CreatePost from './post/createPost';
 import PostList from './postList';
 import UserBar from './user/userBar';
@@ -22,15 +23,26 @@ function App() {
   const [state, dispatch] = useReducer(appReducer, {
     user: '',
     posts: [],
+    error: '',
   });
-  const { user } = state;
+  const { user, error } = state;
 
+  const [posts, getPosts] = useResource(() => ({
+    url: '/posts',
+    method: 'get',
+  }));
+  useEffect(getPosts, []);
   useEffect(() => {
-    fetch('/api/posts')
-      .then((result) => result.json())
-      .then((posts) => dispatch({ type: 'FETCH_POSTS', posts }));
-  }, []);
-
+    if (posts && posts.error) {
+      dispatch({ type: 'POSTS_ERROR' });
+    }
+    if (posts && posts.data) {
+      dispatch({
+        type: 'FETCH_POSTS',
+        posts: posts.data.reverse(),
+      });
+    }
+  }, [posts]);
   useEffect(() => {
     if (user) {
       document.title = `${user} - React Hooks Blog`;
@@ -51,6 +63,7 @@ function App() {
           {user && <CreatePost />}
           <br />
           <hr />
+          {error && <b>{error}</b>}
           <PostList />
         </div>
       </ThemeContext.Provider>

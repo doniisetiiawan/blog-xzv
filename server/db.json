@@ -11,6 +11,12 @@
       "title": "Using React Fragments",
       "content": "Keeping the DOM tree clean!",
       "author": "Daniel Bugl"
+    },
+    {
+      "title": "Hayden Mills",
+      "content": "Natus odio consequatur inventore ut eius.",
+      "author": "Abbigail50",
+      "id": "RixOgtG"
     }
   ],
   "users": [
@@ -18,6 +24,11 @@
       "id": 1,
       "username": "Daniel Bugl",
       "password": "supersecure42"
+    },
+    {
+      "username": "Dewayne60",
+      "password": "123123123",
+      "id": 2
     }
   ],
   "themes": [
