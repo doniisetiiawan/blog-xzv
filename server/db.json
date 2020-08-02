@@ -75,6 +75,11 @@
       "username": "your.email+faker22940@gmail.com",
       "password": "123123123",
       "id": 4
+    },
+    {
+      "username": "Dwight9",
+      "password": "123123123",
+      "id": 5
     }
   ],
   "themes": [

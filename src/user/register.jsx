@@ -3,6 +3,17 @@ import React, { useEffect } from 'react';
 import { useInput } from 'react-hookedup';
 import { useAPIRegister, useDispatch } from '../hooks';
 
+function useRegisterEffect(user, dispatch) {
+  useEffect(() => {
+    if (user && user.data) {
+      dispatch({
+        type: 'REGISTER',
+        username: user.data.username,
+      });
+    }
+  }, [dispatch, user]);
+}
+
 function Register() {
   const dispatch = useDispatch();
 
@@ -20,15 +31,7 @@ function Register() {
   } = useInput('');
 
   const [user, register] = useAPIRegister();
-
-  useEffect(() => {
-    if (user && user.data) {
-      dispatch({
-        type: 'REGISTER',
-        username: user.data.username,
-      });
-    }
-  }, [dispatch, user]);
+  useRegisterEffect(user, dispatch);
 
   return (
     <form

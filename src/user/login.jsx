@@ -3,22 +3,8 @@ import React, { useEffect, useState } from 'react';
 import { useInput } from 'react-hookedup';
 import { useAPILogin, useDispatch } from '../hooks';
 
-function Login() {
-  const dispatch = useDispatch();
-
-  const {
-    value: username,
-    bindToInput: bindUsername,
-  } = useInput('');
-  const [loginFailed, setLoginFailed] = useState(false);
-  const {
-    value: password,
-    bindToInput: bindPassword,
-  } = useInput('');
-
-  const [user, login] = useAPILogin();
-
-  useEffect(() => {
+function useLoginEffect(user, dispatch, setLoginFailed) {
+  return useEffect(() => {
     if (user && user.data) {
       if (user.data.length > 0) {
         setLoginFailed(false);
@@ -33,7 +19,24 @@ function Login() {
     if (user && user.error) {
       setLoginFailed(true);
     }
-  }, [user]);
+  }, [dispatch, user, setLoginFailed]);
+}
+
+function Login() {
+  const dispatch = useDispatch();
+
+  const {
+    value: username,
+    bindToInput: bindUsername,
+  } = useInput('');
+  const [loginFailed, setLoginFailed] = useState(false);
+  const {
+    value: password,
+    bindToInput: bindPassword,
+  } = useInput('');
+
+  const [user, login] = useAPILogin();
+  useLoginEffect(user, dispatch, setLoginFailed);
 
   return (
     <form
